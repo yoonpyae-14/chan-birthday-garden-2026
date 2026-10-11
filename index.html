@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#e5f1e8">
+
+<title>A Little Birthday Garden for Chan 🌿</title>
+
+<style>
+
+:root{--mint:#e3f0e6;--cream:#fffaf0;--sage:#799b83;--dark:#385744;--gold:#c8aa70;--pink:#f4e0dc}
+
+*{box-sizing:border-box}
+
+body{margin:0;background:linear-gradient(150deg,#e6f2e8,#fffaf0 55%,#f4e7dc);color:var(--dark);font-family:Georgia,'Times New Roman',serif;min-height:100vh}
+
+button,input{font:inherit}
+
+button{cursor:pointer;border:0;border-radius:25px;padding:12px 20px;background:var(--sage);color:white;transition:transform .2s,background .2s}
+
+button:hover{transform:translateY(-2px);background:var(--dark)}
+
+button:disabled{opacity:.5;cursor:default;transform:none}
+
+.secondary{background:#f1eee2;color:var(--dark);border:1px solid #d7e3d8}
+
+.wrap{width:min(720px,92%);margin:auto;padding:28px 0 55px}
+
+nav{display:flex;justify-content:space-between;align-items:center;font-size:13px;letter-spacing:2px;padding:6px 0 22px}
+
+.logo{font-size:20px;color:var(--sage)}
+
+.panel{background:rgba(255,253,246,.88);border:1px solid #fff;border-radius:25px;padding:clamp(22px,5vw,38px);box-shadow:0 12px 38px #58785d12;margin:15px 0}
+
+.center{text-align:center}
+
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--sage)}
+
+h1{font-size:clamp(32px,8vw,51px);font-weight:normal;line-height:1.15;margin:16px 0}
+
+h2{font-size:clamp(24px,6vw,33px);font-weight:normal;margin:10px 0 18px}
+
+p{line-height:1.85;font-size:16px}
+
+.small{font-size:13px;color:#7a8e7d}
+
+input{width:100%;padding:14px;border:1px solid #c9d9ca;border-radius:14px;background:#fffdf8;color:var(--dark);margin:12px 0;outline-color:var(--sage)}
+
+.hidden{display:none!important}
+
+.flower{font-size:28px;letter-spacing:9px;animation:bob 3s ease-in-out infinite}
+
+@keyframes bob{50%{transform:translateY(-7px)}}
+
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
+
+@keyframes float{0%{transform:translateY(10px) rotate(-5deg)}100%{transform:translateY(-12px) rotate(5deg)}}
+
+.fade{animation:fade .55s ease both}
+
+.sparkles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+
+.sparkles span{position:absolute;color:#b9cda9;animation:twinkle 3s infinite}
+
+main,nav,footer{position:relative;z-index:1}
+
+.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0}
+
+.game-card{background:#f7f5e9;border:1px solid #e4e8d9;border-radius:18px;padding:17px 13px;text-align:left;color:var(--dark);min-height:130px}
+
+.game-card:hover{background:#e8f1e6;color:var(--dark)}
+
+.game-card .emoji{font-size:30px;display:block;margin-bottom:9px}
+
+.game-card strong{font-size:16px;font-weight:normal}
+
+.game-card small{display:block;line-height:1.6;margin-top:6px;color:#7a8e7d}
+
+.done{font-size:12px;color:#65866b;display:block;margin-top:7px}
+
+.progress{height:5px;border-radius:5px;background:#e5e9dc;margin:18px 0;overflow:hidden}
+
+.progress div{height:100%;width:0;background:var(--sage);transition:width .4s}
+
+.star-area{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:28px 0}
+
+.star{font-size:39px;background:#f4edda;color:#bdab80;border-radius:50%;width:65px;height:65px;padding:0}
+
+.star.collected{background:#e4f0e5;color:#c4a450;animation:fade .3s}
+
+.message{min-height:65px;padding:15px;background:#f7f4e8;border-radius:15px;line-height:1.7}
+
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:22px 0}
+
+.memory{height:77px;padding:0;border-radius:14px;background:#dfece1;font-size:28px;color:var(--dark);border:1px solid #cbdcca}
+
+.memory.open,.memory.matched{background:#fffaf0;border:1px solid #cdbd95}
+
+.quiz-option{display:block;width:100%;text-align:left;background:#f2f3e8;color:var(--dark);margin:9px 0;border:1px solid #e0e6d9}
+
+.quiz-option:hover{background:#e4f0e5;color:var(--dark)}
+
+.quiz-option.chosen{outline:2px solid var(--sage)}
+
+.letter-paper{background:#fffdf6;border:1px solid #eadfca;border-radius:4px;padding:clamp(20px,5vw,38px);box-shadow:0 8px 25px #5c694310}
+
+.letter-paper p{font-size:16px}
+
+.page-count{font-size:12px;letter-spacing:2px;color:var(--sage)}
+
+.envelope{font-size:74px;display:block;animation:float 2.5s ease-in-out infinite}
+
+.gift{font-size:100px;display:block;animation:bob 2s infinite}
+
+footer{text-align:center;font-size:12px;color:#849687;padding-top:20px}
+
+@media(max-width:420px){.wrap{width:92%}.menu-grid{gap:9px}.game-card{padding:14px 11px;min-height:125px}.cards{gap:6px}.memory{height:65px;font-size:25px}.star{width:55px;height:55px;font-size:32px}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sparkles" id="sparkles"></div>
+
+<div class="wrap">
+
+<nav><span class="logo">✿</span><span>A LITTLE GARDEN FOR CHAN</span><span>♡</span></nav>
+
+<main>
+
+<section id="welcome" class="panel center fade">
+
+<div class="flower">✿ ✧ ❀</div>
+
+<p class="eyebrow">A little place made just for you</p>
+
+<h1>Happy Birthday,<br>Chan ♡</h1>
+
+<p>To someone who makes my ordinary days feel a little less ordinary. 🌿</p>
+
+<p class="small">Before we begin, may I know who's visiting this little garden?</p>
+
+<form id="nameForm">
+
+<input id="nameInput" aria-label="Your name" placeholder="Your name..." autocomplete="off" required>
+
+<button type="submit">Enter the garden ✨</button>
+
+</form>
+
+<p id="nameError" class="small hidden">This little garden is meant for Chan. Try your name again ♡</p>
+
+</section>
+
+<section id="menu" class="hidden">
+
+<div class="panel center fade">
+
+<p class="eyebrow">Welcome to your little world</p>
+
+<h1>For you, Chan 🌿</h1>
+
+<p>Four little games are waiting for you. Play them in any order, take your time, and collect every little surprise.</p>
+
+<div class="progress"><div id="progressBar"></div></div>
+
+<p id="progressText" class="small">0 of 4 games completed</p>
+
+<div class="menu-grid">
+
+<button class="game-card" onclick="openGame('stars')"><span class="emoji">⭐</span><strong>Catch the Stars</strong><small>Collect five little stars.</small><span class="done" id="status-stars">Not played yet</span></button>
+
+<button class="game-card" onclick="openGame('memory')"><span class="emoji">🌼</span><strong>Memory Match</strong><small>Find four matching pairs.</small><span class="done" id="status-memory">Not played yet</span></button>
+
+<button class="game-card" onclick="openGame('quiz')"><span class="emoji">🎂</span><strong>Birthday Quiz</strong><small>Three easy questions.</small><span class="done" id="status-quiz">Not played yet</span></button>
+
+<button class="game-card" onclick="openGame('guess')"><span class="emoji">🎁</span><strong>Guess the Surprise</strong><small>Can you guess the gift?</small><span class="done" id="status-guess">Not played yet</span></button>
+
+</div>
+
+<div id="letterUnlock" class="hidden">
+
+<div class="flower">✿ ♡ ✿</div>
+
+<h2>You did it, Chan!</h2>
+
+<p>Every little game is complete. There's something special waiting for you.</p>
+
+<button onclick="showLetter()">Open your birthday letter 💌</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="game-stars" class="panel center hidden">
+
+<p class="eyebrow">Game 1 · A tiny wish</p><h2>Catch the Stars ⭐</h2>
+
+<p>Tap all five stars to collect five little wishes. Easy peasy!</p>
+
+<div class="star-area" id="starArea"></div>
+
+<div id="starMessage" class="message">Your first little wish is waiting. ✨</div>
+
+<p class="small" id="starCount">0 / 5 stars collected</p>
+
+<button class="secondary" onclick="backMenu()">Back to games</button>
+
+</section>
+
+<section id="game-memory" class="panel center hidden">
+
+<p class="eyebrow">Game 2 · A little memory</p><h2>Little Memory Match 🌼</h2>
+
+<p>Flip two cards and find their matching pair. There are four pairs.</p>
+
+<div class="cards" id="memoryCards"></div>
+
+<p class="small" id="memoryCount">0 / 4 pairs found</p>
+
+<button class="secondary" onclick="backMenu()">Back to games</button>
+
+</section>
+
+<section id="game-quiz" class="panel hidden">
+
+<p class="eyebrow">Game 3 · Just for fun</p><h2 class="center">Birthday Quiz 🎂</h2>
+
+<p class="center">Choose the right answer. You can always try again!</p>
+
+<div id="quizContent"></div>
+
+<p id="quizFeedback" class="message">Ready when you are ♡</p>
+
+<button class="secondary" onclick="backMenu()">Back to games</button>
+
+</section>
+
+<section id="game-guess" class="panel center hidden">
+
+<p class="eyebrow">Game 4 · A tiny mystery</p><h2>Guess the Surprise 🎁</h2>
+
+<p>What is waiting at the end of this little garden?</p>
+
+<div style="font-size:64px;margin:20px">🎀</div>
+
+<div id="guessOptions"></div>
+
+<p id="guessFeedback" class="message">Choose what you think is hidden behind the ribbon!</p>
+
+<button class="secondary" onclick="backMenu()">Back to games</button>
+
+</section>
+
+<section id="letter" class="panel hidden">
+
+<div class="center">
+
+<span class="envelope">💌</span>
+
+<p class="eyebrow">A little letter, just for you</p>
+
+<h2>Your Birthday Letter</h2>
+
+<p>You may be just one person in this world, but you make this little part of my world feel brighter.</p>
+
+</div>
+
+<div class="letter-paper fade">
+
+<p class="page-count" id="letterCount">PART 1 OF 5</p>
+
+<h2 id="letterTitle">A little birthday wish ♡</h2>
+
+<div id="letterText"></div>
+
+</div>
+
+<div class="center" style="margin-top:20px">
+
+<div class="progress"><div id="letterProgress"></div></div>
+
+<button id="letterNext" onclick="nextLetter()">Continue →</button>
+
+</div>
+
+</section>
+
+<section id="gift" class="panel center hidden">
+
+<p class="eyebrow">One last little surprise</p>
+
+<h2>Your birthday gift 🎀</h2>
+
+<p>You've reached the end of your little garden. Are you ready to open your gift?</p>
+
+<button id="openGift" onclick="revealGift()">Open your gift 🎁</button>
+
+<div id="giftReveal" class="hidden fade">
+
+<span class="gift">🎁</span>
+
+<h2>A wish just for you, Chan ♡</h2>
+
+<p>I hope this year gives you as much happiness as you quietly bring to the people around you.</p>
+
+<p>And if you ever forget how special you are, I hope this little letter reminds you.</p>
+
+<div class="flower">✿ ✧ ❀</div>
+
+<p>Keep being you. The world is a little brighter with you in it. 🌿</p>
+
+<button onclick="playSong()">Play our song ♡ 🎵</button>
+
+<p class="small">The song will open on YouTube.</p>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>Made with warmth, little wishes, and lots of green. ♡</footer>
+
+</div>
+
+<script>
+
+const $=id=>document.getElementById(id);
+
+const gameNames=['stars','memory','quiz','guess'];
+
+const completed={stars:false,memory:false,quiz:false,guess:false};
+
+let currentGame='',stars=0,letterPage=0,quizIndex=0,guessWon=false;
+
+const starWishes=[
+
+'I hope you always find little reasons to smile.',
+
+'I hope your heart always finds a place to rest.',
+
+'May the things you dream of slowly become real.',
+
+'Even on hard days, I hope you remember how precious you are.',
+
+"I'm really glad that our paths crossed, Chan."
+
+];
+
+const letterPages=[
+
+{title:'A little birthday wish ♡',text:[
+
+'Happy Birthday, Chan! 🤍',
+
+'I hope today brings you so much happiness, beautiful memories, and all the little things that make your heart smile. You deserve a day that feels as special as you are.',
+
+'I hope this new chapter of your life is filled with beautiful things, unexpected happiness, and moments worth remembering.'
+
+]},
+
+{title:'A little thank you 🌿',text:[
+
+'Before anything else, I just want to say thank you. Thank you for being there for me, for listening to me, and for giving me strength whenever I needed it.',
+
+'You might not even realize it, but sometimes your words, your presence, and the way you care can make someone’s day so much better. And for me, that someone is me.',
+
+'I’m genuinely grateful that I got to know you and have you in my life.'
+
+]},
+
+{title:'Wishes for your future ✨',text:[
+
+'I hope life will always be kind to you. I hope you meet beautiful people, experience wonderful moments, and find happiness in places you never expected.',
+
+'I hope you get to do all the things you’ve been dreaming of. May you have the courage to chase what you want, the strength to get through difficult days, and the patience to keep going when things don’t work out as planned.',
+
+'May you find more reasons to smile than reasons to cry, and may your heart always have a peaceful place to rest.'
+
+]},
+
+{title:'A little reminder 🤍',text:[
+
+'Chan, please remember that you don’t always have to be strong. It’s okay to feel tired. It’s okay to have bad days. It’s okay when things don’t go as planned.',
+
+'You don’t have to figure everything out at once. Whatever life brings you, I hope you never forget how precious you are and how much good you deserve.',
+
+'Whenever you need someone to listen, someone to cheer you on, or simply someone to sit beside you when the world feels heavy, I hope you know that you have someone rooting for you.'
+
+]},
+
+{title:'Until your next birthday ♡',text:[
+
+'Some people come into our lives and make ordinary days feel a little brighter without even trying. They become a small but meaningful part of our everyday happiness.',
+
+'So today, I just want you to know that I’m really glad you’re here, and I’m really glad that our paths crossed.',
+
+'Happy 19th Birthday once again, Chan. May this year be gentle with your heart, generous with its blessings, and full of moments that remind you how beautiful life can be.',
+
+'With lots of warmth and the sincerest wishes for your happiness,',
+
+'Someone who’s always rooting for you. ♡'
+
+]}
+
+];
+
+function hideAll(){['welcome','menu','game-stars','game-memory','game-quiz','game-guess','letter','gift'].forEach(id=>$(id).classList.add('hidden'))}
+
+function show(id){hideAll();$(id).classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+
+$('nameForm').addEventListener('submit',e=>{
+
+ e.preventDefault();
+
+ const name=$('nameInput').value.trim().toLowerCase();
+
+ if(name==='chan'||name==='aye chan myat mon oo'){
+
+ $('nameError').classList.add('hidden');show('menu');updateProgress();
+
+ }else $('nameError').classList.remove('hidden');
+
+});
+
+function updateProgress(){
+
+ const n=gameNames.filter(g=>completed[g]).length;
+
+ $('progressBar').style.width=(n/4*100)+'%';
+
+ $('progressText').textContent=n+' of 4 games completed';
+
+ gameNames.forEach(g=>$( 'status-'+g).textContent=completed[g]?'✓ Completed!':'Not played yet');
+
+ $('letterUnlock').classList.toggle('hidden',n!==4);
+
+}
+
+function finishGame(g){
+
+ completed[g]=true;updateProgress();
+
+ const box=document.createElement('div');
+
+ box.className='panel center fade';
+
+ box.innerHTML='<div class="flower">✿ ✨ ✿</div><h2>You did it! ♡</h2><p>One little game complete. You’re doing lovely, Chan.</p><button onclick="backMenu()">Back to all games</button>';
+
+ const target=$('game-'+g);
+
+ target.appendChild(box);
+
+ target.querySelectorAll('button').forEach(b=>{if(!b.classList.contains('secondary'))b.disabled=true});
+
+}
+
+function openGame(g){
+
+ currentGame=g;
+
+ if(completed[g]){alert('You have already completed this little game! ♡');return}
+
+ show('game-'+g);
+
+ if(g==='stars')initStars();
+
+ if(g==='memory')initMemory();
+
+ if(g==='quiz')initQuiz();
+
+ if(g==='guess')initGuess();
+
+}
+
+function backMenu(){show('menu');updateProgress()}
+
+function initStars(){
+
+ stars=0;$('starArea').innerHTML='';$('starMessage').textContent='Your first little wish is waiting. ✨';$('starCount').textContent='0 / 5 stars collected';
+
+ starWishes.forEach((wish,i)=>{
+
+  const b=document.createElement('button');b.className='star';b.textContent='☆';b.setAttribute('aria-label','Collect star '+(i+1));
+
+  b.onclick=()=>{
+
+   if(b.disabled)return;b.disabled=true;b.classList.add('collected');b.textContent='★';stars++;
+
+   $('starMessage').textContent=wish;$('starCount').textContent=stars+' / 5 stars collected';
+
+   if(stars===5){$('starMessage').textContent='All five wishes are yours. Keep them close, Chan. ♡';finishGame('stars')}
+
+  };
+
+  $('starArea').appendChild(b);
+
+ });
+
+}
+
+function initMemory(){
+
+ const faces=['🌼','🌙','⭐','🎁','🌼','🌙','⭐','🎁'];
+
+ const arr=faces.sort(()=>Math.random()-.5);
+
+ $('memoryCards').innerHTML='';let first=null,lock=false,pairs=0;
+
+ arr.forEach((face,i)=>{
+
+  const b=document.createElement('button');b.className='memory';b.textContent='?';b.dataset.face=face;b.dataset.index=i;
+
+  b.onclick=()=>{
+
+   if(lock||b.classList.contains('open')||b.classList.contains('matched'))return;
+
+   b.classList.add('open');b.textContent=face;
+
+   if(!first){first=b;return}
+
+   if(first.dataset.face===face){
+
+    first.classList.add('matched');b.classList.add('matched');first=null;pairs++;
+
+    $('memoryCount').textContent=pairs+' / 4 pairs found';
+
+    if(pairs===4)finishGame('memory');
+
+   }else{
+
+    const old=first;first=null;lock=true;
+
+    setTimeout(()=>{old.classList.remove('open');old.textContent='?';b.classList.remove('open');b.textContent='?';lock=false},700);
+
+   }
+
+  };
+
+  $('memoryCards').appendChild(b);
+
+ });
+
+ $('memoryCount').textContent='0 / 4 pairs found';
+
+}
+
+const quizQuestions=[
+
+{q:'What date is Chan’s birthday?',opts:['October 14','December 25','January 1'],correct:0},
+
+{q:'How old is Chan turning in 2026?',opts:['18','19','20'],correct:1},
+
+{q:'What are we collecting in the first game?',opts:['Little stars','Shoes','Apples'],correct:0}
+
+];
+
+function initQuiz(){
+
+ quizIndex=0;$('quizFeedback').textContent='No pressure. You can try again if you need to. ♡';renderQuiz();
+
+}
+
+function renderQuiz(){
+
+ if(quizIndex>=quizQuestions.length){$('quizContent').innerHTML='<p class="center">You finished all three questions! 🎉</p>';finishGame('quiz');return}
+
+ const q=quizQuestions[quizIndex];$('quizContent').innerHTML='<p><strong>Question '+(quizIndex+1)+' of 3</strong></p><h2>'+q.q+'</h2>';
+
+ q.opts.forEach((opt,i)=>{
+
+  const b=document.createElement('button');b.className='quiz-option';b.textContent=opt;
+
+  b.onclick=()=>{
+
+   if(i===q.correct){$('quizFeedback').textContent='That’s right! Lovely job. ♡';quizIndex++;setTimeout(renderQuiz,450)}
+
+   else $('quizFeedback').textContent='Not quite! Try another answer. You’ve got this. 🌿';
+
+  };
+
+  $('quizContent').appendChild(b);
+
+ });
+
+}
+
+function initGuess(){
+
+ guessWon=false;$('guessFeedback').textContent='Choose what you think is hidden behind the ribbon!';
+
+ $('guessOptions').innerHTML='';
+
+ ['A little birthday letter 💌','A surprise gift 🎁','A tiny garden 🌿'].forEach((opt,i)=>{
+
+  const b=document.createElement('button');b.className='quiz-option';b.textContent=opt;
+
+  b.onclick=()=>{
+
+   if(guessWon)return;
+
+   if(i===1){guessWon=true;$('guessFeedback').textContent='You guessed it! A little surprise is waiting for you. 🎁';finishGame('guess')}
+
+   else $('guessFeedback').textContent='Not quite! Have another guess. ♡';
+
+  };
+
+  $('guessOptions').appendChild(b);
+
+ });
+
+}
+
+function showLetter(){letterPage=0;show('letter');renderLetter()}
+
+function renderLetter(){
+
+ const p=letterPages[letterPage];
+
+ $('letterCount').textContent='PART '+(letterPage+1)+' OF '+letterPages.length;
+
+ $('letterTitle').textContent=p.title;
+
+ $('letterText').innerHTML=p.text.map(t=>'<p>'+escapeHtml(t)+'</p>').join('');
+
+ $('letterProgress').style.width=((letterPage+1)/letterPages.length*100)+'%';
+
+ $('letterNext').textContent=letterPage===letterPages.length-1?'Open your final gift 🎁':'Continue →';
+
+ $('letterText').classList.remove('fade');void $('letterText').offsetWidth;$('letterText').classList.add('fade');
+
+}
+
+function nextLetter(){
+
+ if(letterPage<letterPages.length-1){letterPage++;renderLetter()}
+
+ else show('gift');
+
+}
+
+function revealGift(){
+
+ $('openGift').classList.add('hidden');$('giftReveal').classList.remove('hidden');confetti();
+
+}
+
+function playSong(){
+
+ window.open('https://www.youtube.com/results?search_query=Elliot+James+Reay+I+Think+They+Call+This+Love+official+music+video','_blank','noopener');
+
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function confetti(){
+
+ for(let i=0;i<24;i++){
+
+  const s=document.createElement('span');s.textContent=['✦','✿','♡','✨'][i%4];
+
+  s.style.cssText='position:fixed;z-index:10;left:'+Math.random()*100+'vw;top:-25px;font-size:'+(14+Math.random()*18)+'px;color:'+['#799b83','#c8aa70','#d7a9a0'][i%3]+';pointer-events:none;transition:transform 2.5s ease,opacity 2.5s ease';
+
+  document.body.appendChild(s);
+
+  requestAnimationFrame(()=>{s.style.transform='translateY('+(window.innerHeight+70)+'px) rotate('+(Math.random()*600)+'deg)';s.style.opacity='0'});
+
+  setTimeout(()=>s.remove(),2700);
+
+ }
+
+}
+
+for(let i=0;i<24;i++){
+
+ const s=document.createElement('span');s.textContent=['✧','·','✦'][i%3];
+
+ s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+
+ s.style.fontSize=(10+Math.random()*12)+'px';s.style.animationDelay=Math.random()*4+'s';
+
+ $('sparkles').appendChild(s);
+
+}
+
+</script>
+
+</body>
+
+</html>
